@@ -67,7 +67,7 @@ PM2 - A process manager that will keep the sever up and running permenantly.
 ##Server Availability
 The News Explorer Backend server is also permanently running and accessible at the following URL:
 
-Production Server: https://api.news-expo.mooo.com/
+Production Server: 'https://api.news-expo.mooo.com/'
 You can make API requests to the above URL to interact with the server and access its functionalities. Please refer to the API endpoints mentioned earlier for the available routes and their corresponding HTTP methods.
 
 Feel free to explore the server and leverage its capabilities for building your own News Explorer application.
