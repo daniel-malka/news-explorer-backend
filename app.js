@@ -10,6 +10,7 @@ const { requestLogger, errorLogger } = require('./middlewars/logger');
 const requestsLmiter = require('./middlewars/secureLimit');
 
 const app = express();
+
 const { PORT = 3001 } = process.env;
 const { MONGO_URL = 'mongodb://localhost:27017/news-explorer' } = process.env;
 mongoose.connect(MONGO_URL);
