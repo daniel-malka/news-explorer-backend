@@ -1,8 +1,7 @@
-const router = require("express").Router();
-//require all validators
+const router = require('express').Router();
 
-const { getUserInfo } = require("../controllers/users");
+const { getUserInfo } = require('../controllers/users');
 
-router.get("/", getUserInfo);
+router.get('/me', getUserInfo);
 
 module.exports = { UserRouter: router };
