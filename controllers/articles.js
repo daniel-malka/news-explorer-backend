@@ -1,41 +1,61 @@
-const ArticleSchema = require("../models/article.js");
-const errorHandler = require("../errors/Error");
-const getUserArticles = (req, res) => {
-  const { _id } = req.body;
+const ArticleSchema = require('../models/article');
+const ErrorHandler = require('../errors/Error');
 
-  return ArticleShema.statics
-    .findUserByCredentials(_id)
-    .then(() => res.send(articles));
+const getUserArticles = (req, res, next) => {
+  const { _id } = req.user;
+
+  ArticleSchema.find({ owner: _id })
+    .then((articles) => res.send(articles))
+    .catch((err) => next(err));
 };
 
-const postArticle = (req, res) => {
-  const { keyword, title, text, date, source, link, image, owner } = req.body;
+const postArticle = (req, res, next) => {
+  const { keyword, source, link, text, title, date, image } = req.body;
 
-  ArticleSchema.findOne({ keyword, source, link, text, owner }).then(
-    (article) => {
-      if (article) {
-        next(new errorHandler(409, "this article is already posted"));
-      }
-      ArticleSchema.create({ title, text, date, source, link, image });
-      res.send({ article });
+  ArticleSchema.findOne({
+    keyword,
+    source,
+    link,
+    text,
+  }).then((article) => {
+    if (article) {
+      next(new ErrorHandler(409, 'This article is already posted'));
     }
-  );
-};
 
-const deleteArticle = (req, res) => {
-  const { _id } = req.params;
-
-  ArticleSchema.findById(_id).orFail(() => {
-    if (!card.owner.equals(req.user._id)) {
-      next(
-        new ErrorHandler(
-          403,
-          `you must be the card owner  in order to delete it`
-        )
-      );
-    }
-    ArticleSchema.deleteOne(article).then(() => res.send(article));
+    ArticleSchema.create({
+      keyword,
+      title,
+      text,
+      date,
+      source,
+      link,
+      image,
+      owner: req.user._id,
+    })
+      .then(() => res.send(article))
+      .catch((err) => next(err));
   });
+};
+
+const deleteArticle = (req, res, next) => {
+  const { articleId } = req.params;
+
+  return ArticleSchema.findById(articleId)
+    .orFail(() => {
+      next(new ErrorHandler(409, 'there is no such card'));
+    })
+    .then((card) => {
+      if (!card.owner.equals(req.user._id)) {
+        next(
+          new ErrorHandler(
+            403,
+            'you must be the card owner in order to delete it'
+          )
+        );
+      }
+      ArticleSchema.deleteOne(card).then(() => res.send(card));
+    })
+    .catch((err) => next(err));
 };
 
 module.exports = { getUserArticles, postArticle, deleteArticle };

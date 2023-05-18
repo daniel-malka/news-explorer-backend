@@ -1,22 +1,21 @@
-//routers
-const router = require("express").Router();
-const { UserRouter } = require("./users");
-const { ArticleRouter } = require("./article");
-const nonRoute = require("./nonRoute");
-//authentication middlwares
-const auth = require("../middlewars/auth");
-//controllers
-const { createUser, login } = require("../controllers/users");
+const router = require('express').Router();
+const { UserRouter } = require('./users');
+const { ArticleRouter } = require('./article');
+const nonRoute = require('./nonRoute');
+const auth = require('../middlewars/auth');
+const { createUser, login } = require('../controllers/users');
+const {
+  validateAuthentication,
+  validateUserBody,
+} = require('../middlewars/validation');
 
-//signup and signin before auth
-
-router.post("/signup", createUser);
-router.post("/signin", login);
+router.post('/signup', validateAuthentication, createUser);
+router.post('/signin', validateUserBody, login);
 
 router.use(auth);
 
-router.use("/users", UserRouter);
-router.use("/article", ArticleRouter);
-router.use("*", nonRoute);
+router.use('/users', UserRouter);
+router.use('/articles', ArticleRouter);
+router.use('*', nonRoute);
 
 module.exports = { router };
