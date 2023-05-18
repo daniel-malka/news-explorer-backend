@@ -1,3 +1,5 @@
+require('dotenv').config({ path: './.env' });
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -6,7 +8,6 @@ const mongoose = require('mongoose');
 const { router } = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewars/logger');
 const requestsLmiter = require('./middlewars/secureLimit');
-require('dotenv').config({ path: './.env' });
 
 const app = express();
 const { PORT = 3001 } = process.env;
