@@ -7,7 +7,7 @@ const { errors } = require('celebrate');
 const mongoose = require('mongoose');
 const { router } = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewars/logger');
-const requestsLmiter = require('./middlewars/secureLimit');
+const { requestsLmiter } = require('./middlewars/secureLimit');
 
 const app = express();
 
