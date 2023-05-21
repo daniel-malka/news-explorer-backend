@@ -1,5 +1,7 @@
 const ArticleSchema = require('../models/article');
-const ErrorHandler = require('../errors/Error');
+const NotFoundError = require('../errors/NotFoundError');
+const BadRequestError = require('../errors/BadRequestError');
+const ForbiddenError = require('../errors/ForbiddenError');
 
 const getUserArticles = (req, res, next) => {
   const { _id } = req.user;
@@ -10,7 +12,15 @@ const getUserArticles = (req, res, next) => {
 };
 
 const postArticle = (req, res, next) => {
-  const { keyword, source, link, text, title, date, image } = req.body;
+  const {
+    keyword,
+    source,
+    link,
+    text,
+    title,
+    date,
+    image,
+  } = req.body;
 
   ArticleSchema.create({
     keyword,
@@ -23,7 +33,19 @@ const postArticle = (req, res, next) => {
     owner: req.user._id,
   })
     .then((article) => res.send(article))
-    .catch((err) => next(err));
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(
+          new BadRequestError(
+            `${Object.values(err.errors)
+              .map((error) => error.message)
+              .join(', ')}`,
+          ),
+        );
+      } else {
+        next(err);
+      }
+    });
 };
 
 const deleteArticle = (req, res, next) => {
@@ -31,18 +53,13 @@ const deleteArticle = (req, res, next) => {
 
   return ArticleSchema.findById(articleId)
     .orFail(() => {
-      next(new ErrorHandler(409, 'there is no such card'));
+      next(new NotFoundError('there is no such card'));
     })
-    .then((card) => {
-      if (!card.owner.equals(req.user._id)) {
-        return next(
-          new ErrorHandler(
-            403,
-            'you must be the card owner in order to delete it'
-          )
-        );
-      }
-      ArticleSchema.deleteOne(card).then(() => res.send(card));
+    .then((article) => {
+      if (!article.owner.equals(req.user._id)) {
+        return next(new ForbiddenError('you must be the article owner in order to delete it'));
+      } /* cant fix this one */
+      ArticleSchema.deleteOne(article).then(() => res.send(article));
     })
     .catch((err) => next(err));
 };

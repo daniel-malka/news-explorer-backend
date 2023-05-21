@@ -1,23 +1,6 @@
 {
   "extends": "airbnb-base",
   "rules": {
-    "no-underscore-dangle": ["off", { "allow": ["id"] }],
-    "implicit-arrow-linebreak": "off",
-    "function-paren-newline": "off",
-    "comma-dangle": "off",
-    "object-curly-newline": "off",
-    "operator-linebreak": "off",
-    "newline-per-chained-call": "off",
-    "func-names": "off",
-    "no-unused-vars": [
-      1,
-      {
-        "vars": "all",
-        "args": "after-used",
-        "argsIgnorePattern": "^_|^next$",
-        "varsIgnorePattern": "^password$"
-      }
-    ],
-    "no-shadow": "off"
+    "no-underscore-dangle": ["off", { "allow": ["id"] }]
   }
 }

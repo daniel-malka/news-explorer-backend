@@ -1,5 +1,4 @@
 require('dotenv').config({ path: './.env' });
-
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -8,11 +7,12 @@ const mongoose = require('mongoose');
 const { router } = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewars/logger');
 const { requestsLmiter } = require('./middlewars/secureLimit');
+const {
+  MONGO_URL = 'mongodb://localhost:27017/news-explorer',
+  PORT = 3001,
+} = require('./utils/config');
 
 const app = express();
-
-const { PORT = 3001 } = require('./utils/config.js');
-const { MONGO_URL } = require('./utils/config.js');
 mongoose.connect(MONGO_URL);
 
 app.use(requestLogger);

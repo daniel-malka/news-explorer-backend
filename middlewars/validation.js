@@ -32,14 +32,16 @@ const validateAuthentication = celebrate({
         'string.required': 'Email is required',
         'string.email': 'Valid email is required',
       }),
-    password: Joi.string().required().min(4).messages({
-      'string.empty': 'Password is required',
-      'string.min': 'Password must be at least 4 characters long',
-    }),
-    name: Joi.string().required().min(2).max(30).messages({
-      'string.empty': 'name is required',
-      'string.min': 'name must be at least 2 characters long',
-    }),
+    password: Joi.string().required().min(4)
+      .messages({
+        'string.empty': 'Password is required',
+        'string.min': 'Password must be at least 4 characters long',
+      }),
+    name: Joi.string().required().min(2).max(30)
+      .messages({
+        'string.empty': 'name is required',
+        'string.min': 'name must be at least 2 characters long',
+      }),
   }),
 });
 

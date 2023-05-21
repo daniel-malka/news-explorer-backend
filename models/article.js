@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose');
 const urlRegex = require('../utils/regex');
-const ErrorHandler = require('../errors/Error');
 
 const ArticleSchema = new Schema(
   {
@@ -29,7 +28,7 @@ const ArticleSchema = new Schema(
   },
   {
     versionKey: false,
-  }
+  },
 );
 
 module.exports = model('article', ArticleSchema);
