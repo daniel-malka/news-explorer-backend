@@ -11,8 +11,8 @@ const { requestsLmiter } = require('./middlewars/secureLimit');
 
 const app = express();
 
-const { PORT = 3001 } = process.env;
-const { MONGO_URL = 'mongodb://localhost:27017/news-explorer' } = process.env;
+const { PORT = 3001 } = require('./utils/config.js');
+const { MONGO_URL } = require('./utils/config.js');
 mongoose.connect(MONGO_URL);
 
 app.use(requestLogger);

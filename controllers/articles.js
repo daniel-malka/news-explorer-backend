@@ -12,29 +12,18 @@ const getUserArticles = (req, res, next) => {
 const postArticle = (req, res, next) => {
   const { keyword, source, link, text, title, date, image } = req.body;
 
-  ArticleSchema.findOne({
+  ArticleSchema.create({
     keyword,
+    title,
+    text,
+    date,
     source,
     link,
-    text,
-  }).then((article) => {
-    if (article) {
-      next(new ErrorHandler(409, 'This article is already posted'));
-    }
-
-    ArticleSchema.create({
-      keyword,
-      title,
-      text,
-      date,
-      source,
-      link,
-      image,
-      owner: req.user._id,
-    })
-      .then(() => res.send(article))
-      .catch((err) => next(err));
-  });
+    image,
+    owner: req.user._id,
+  })
+    .then((article) => res.send(article))
+    .catch((err) => next(err));
 };
 
 const deleteArticle = (req, res, next) => {
@@ -46,7 +35,7 @@ const deleteArticle = (req, res, next) => {
     })
     .then((card) => {
       if (!card.owner.equals(req.user._id)) {
-        next(
+        return next(
           new ErrorHandler(
             403,
             'you must be the card owner in order to delete it'

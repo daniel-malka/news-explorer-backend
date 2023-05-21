@@ -1,19 +1,23 @@
 {
-  "extends": ["airbnb-base"],
+  "extends": "airbnb-base",
   "rules": {
-    "comma-dangle": ["error", "only-multiline"],
     "no-underscore-dangle": ["off", { "allow": ["id"] }],
+    "implicit-arrow-linebreak": "off",
+    "function-paren-newline": "off",
+    "comma-dangle": "off",
+    "object-curly-newline": "off",
+    "operator-linebreak": "off",
+    "newline-per-chained-call": "off",
+    "func-names": "off",
     "no-unused-vars": [
-      "error",
-      { "vars": "all", "args": "after-used", "ignoreRestSiblings": true }
-    ],
-    "object-curly-newline": [
-      "error",
+      1,
       {
-        "ObjectPattern": { "multiline": true },
-        "ImportDeclaration": "never",
-        "ExportDeclaration": { "multiline": true, "minProperties": 3 }
+        "vars": "all",
+        "args": "after-used",
+        "argsIgnorePattern": "^_|^next$",
+        "varsIgnorePattern": "^password$"
       }
-    ]
+    ],
+    "no-shadow": "off"
   }
 }

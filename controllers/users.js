@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const UserSchema = require('../models/users');
 const ErrorHandler = require('../errors/Error');
 
-const { JWT_SECRET = 'abrakadabra' } = process.env;
+const { JWT_SECRET } = require('../utils/config');
 
 const createUser = (req, res, next) => {
   const { email, password, name } = req.body;
@@ -45,7 +45,9 @@ const login = (req, res, next) => {
       res.send({ user, token });
     })
     .catch(() => {
-      next(new ErrorHandler(401, 'incorrect email or password'));
+      return Promise.reject(
+        new ErrorHandler(401, 'incorrect email or password')
+      );
     });
 };
 const getUserInfo = (req, res, next) => {
