@@ -1,4 +1,8 @@
-require('dotenv').config({ path: './.env' });
+const dotenv = process.env.NODE_ENV !== 'production' ? require('dotenv') : null;
+
+if (dotenv) {
+  dotenv.config({ path: './.env' });
+}
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -16,22 +20,14 @@ const app = express();
 mongoose.connect(MONGO_URL);
 
 app.use(requestLogger);
-
 app.use(cors());
-
 app.options('*', cors());
-
 app.use(helmet());
-
 app.use(requestsLmiter);
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(router);
-
 app.use(errorLogger);
-
 app.use(errors());
 
 app.use((err, req, res, next) => {

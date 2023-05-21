@@ -53,13 +53,13 @@ const deleteArticle = (req, res, next) => {
 
   return ArticleSchema.findById(articleId)
     .orFail(() => {
-      next(new NotFoundError('there is no such card'));
+      next(new NotFoundError('There is no such card'));
     })
     .then((article) => {
       if (!article.owner.equals(req.user._id)) {
-        return next(new ForbiddenError('you must be the article owner in order to delete it'));
-      } /* cant fix this one */
-      ArticleSchema.deleteOne(article).then(() => res.send(article));
+        return next(new ForbiddenError('You must be the article owner in order to delete it'));
+      }
+      return ArticleSchema.deleteOne(article).then(() => res.send(article));
     })
     .catch((err) => next(err));
 };
