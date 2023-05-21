@@ -1,8 +1,3 @@
-const dotenv = process.env.NODE_ENV !== 'production' ? require('dotenv') : null;
-
-if (dotenv) {
-  dotenv.config({ path: './.env' });
-}
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -11,10 +6,13 @@ const mongoose = require('mongoose');
 const { router } = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewars/logger');
 const { requestsLmiter } = require('./middlewars/secureLimit');
+
 const {
-  MONGO_URL = 'mongodb://localhost:27017/news-explorer',
-  PORT = 3001,
+  PORT, MONGO_URL, NODE_ENV,
 } = require('./utils/config');
+
+const isProduction = NODE_ENV !== 'production';
+const port = isProduction ? PORT : 3001;
 
 const app = express();
 mongoose.connect(MONGO_URL);
@@ -38,6 +36,6 @@ app.use((err, req, res, next) => {
   next();
 });
 
-app.listen(PORT, () => {
-  console.log(`listening to port ${PORT}`);
+app.listen(port, () => {
+  console.log(`listening to port ${port}`);
 });
