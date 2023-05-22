@@ -32,14 +32,16 @@ const validateAuthentication = celebrate({
         'string.required': 'Email is required',
         'string.email': 'Valid email is required',
       }),
-    password: Joi.string().required().min(4).messages({
-      'string.empty': 'Password is required',
-      'string.min': 'Password must be at least 4 characters long',
-    }),
-    name: Joi.string().required().min(2).messages({
-      'string.empty': 'name is required',
-      'string.min': 'name must be at least 2 characters long',
-    }),
+    password: Joi.string().required().min(4)
+      .messages({
+        'string.empty': 'Password is required',
+        'string.min': 'Password must be at least 4 characters long',
+      }),
+    name: Joi.string().required().min(2).max(30)
+      .messages({
+        'string.empty': 'name is required',
+        'string.min': 'name must be at least 2 characters long',
+      }),
   }),
 });
 
@@ -56,33 +58,12 @@ const validateUserBody = celebrate({
   }),
 });
 
-const validateProfile = celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).messages({
-      'string.min': 'Name must be at least 2 characters long',
-      'string.max': 'Name must be less than 30 characters long',
-    }),
-    about: Joi.string().min(2).max(30).messages({
-      'string.min': 'About must be at least 2 characters long',
-      'string.max': 'About must be less than 30 characters long',
-    }),
-  }),
-});
-
-const validateAvatar = celebrate({
-  body: Joi.object().keys({
-    avatar: Joi.string()
-      .custom(validateURL)
-      .message('Invalid URL for avatar link'),
-  }),
-});
-
 const validateArticleBody = celebrate({
   body: Joi.object().keys({
     keyword: Joi.string().required(),
-    source: Joi.string().required().min(2),
-    text: Joi.string().required().min(2),
-    title: Joi.string().required().min(2).max(30),
+    source: Joi.string().required(),
+    text: Joi.string().required(),
+    title: Joi.string().required(),
     date: Joi.string().required(),
     link: Joi.string().required().custom(validateURL).messages({
       'string.empty': 'Link is required',
@@ -98,8 +79,6 @@ const validateArticleBody = celebrate({
 module.exports = {
   validateAuthentication,
   validateUserBody,
-  validateProfile,
-  validateAvatar,
   validateObjectId,
   validateArticleBody,
 };

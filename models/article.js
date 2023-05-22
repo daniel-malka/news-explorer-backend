@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose');
 const urlRegex = require('../utils/regex');
-const ErrorHandler = require('../errors/Error');
 
 const ArticleSchema = new Schema(
   {
@@ -29,14 +28,7 @@ const ArticleSchema = new Schema(
   },
   {
     versionKey: false,
-  }
+  },
 );
-
-ArticleSchema.statics.findUserByCredentials = function (_id) {
-  if (!_id) {
-    return new ErrorHandler(401, 'there are no articles savd by this user');
-  }
-  return this.find({ _id });
-};
 
 module.exports = model('article', ArticleSchema);

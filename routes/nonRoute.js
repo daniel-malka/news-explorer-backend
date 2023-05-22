@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const NotFoundError = require('../errors/Error');
+const NotFoundError = require('../errors/ConflictError');
 
 module.exports = NotFoundError;
 
