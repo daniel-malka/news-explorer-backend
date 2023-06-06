@@ -4,12 +4,11 @@ const UserSchema = require('../models/users');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const ConflictError = require('../errors/ConflictError');
-const UnauthorizedError = require('../errors/UnauthorizedError');
 
 const { JWT_SECRET } = require('../utils/config');
 
 const createUser = (req, res, next) => {
-  const { email, password, name } = req.body;
+  const { email, password, username } = req.body;
   UserSchema.findOne({ email })
     .then((user) => {
       if (user) {
@@ -18,7 +17,7 @@ const createUser = (req, res, next) => {
       return bcrypt.hash(password, 10);
     })
     .then((hash) => {
-      UserSchema.create({ email, name, password: hash })
+      UserSchema.create({ email, username, password: hash })
         .then((user) => res.send({ user }))
         .catch((err) => {
           if (err.name === 'ValidationError') {
@@ -26,8 +25,8 @@ const createUser = (req, res, next) => {
               new BadRequestError(
                 `${Object.values(err.errors)
                   .map((error) => error.message)
-                  .join(', ')}`,
-              ),
+                  .join(', ')}`
+              )
             );
           } else {
             next(err);
@@ -36,7 +35,7 @@ const createUser = (req, res, next) => {
     });
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
 
   return UserSchema.findUserByCredentials(email, password)
@@ -46,7 +45,7 @@ const login = (req, res) => {
       });
       res.send({ user, token });
     })
-    .catch(() => Promise.reject(new UnauthorizedError('incorrect email or password')));
+    .catch(next);
 };
 
 const getUserInfo = (req, res, next) => {

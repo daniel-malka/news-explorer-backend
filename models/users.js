@@ -5,7 +5,7 @@ const UnauthorizedError = require('../errors/UnauthorizedError');
 
 const UserSchema = new Schema(
   {
-    name: {
+    username: {
       type: String,
       minlength: 2,
       maxlength: 30,
@@ -28,7 +28,7 @@ const UserSchema = new Schema(
   },
   {
     versionKey: false,
-  },
+  }
 );
 
 UserSchema.statics.findUserByCredentials = function (email, password) {
@@ -37,13 +37,13 @@ UserSchema.statics.findUserByCredentials = function (email, password) {
     .then((user) => {
       if (!user) {
         return Promise.reject(
-          new UnauthorizedError('Incorrect email or password'),
+          new UnauthorizedError('Incorrect email or password')
         );
       }
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
           return Promise.reject(
-            new UnauthorizedError('Incorrect email or password'),
+            new UnauthorizedError('2Incorrect email or password')
           );
         }
         return user;
