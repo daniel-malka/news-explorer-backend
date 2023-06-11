@@ -10,7 +10,7 @@ const {
 } = require('../controllers/articles');
 
 router.get('/', getUserArticles);
-router.post('/', validateArticleBody, postArticle);
+router.post('/articles', validateArticleBody, postArticle);
 router.delete('/:articleId', validateObjectId, deleteArticle);
 
 module.exports = { ArticleRouter: router };

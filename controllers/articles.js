@@ -12,15 +12,7 @@ const getUserArticles = (req, res, next) => {
 };
 
 const postArticle = (req, res, next) => {
-  const {
-    keyword,
-    source,
-    link,
-    text,
-    title,
-    date,
-    image,
-  } = req.body;
+  const { keyword, source, link, text, title, date, image } = req.body;
 
   ArticleSchema.create({
     keyword,
@@ -39,8 +31,8 @@ const postArticle = (req, res, next) => {
           new BadRequestError(
             `${Object.values(err.errors)
               .map((error) => error.message)
-              .join(', ')}`,
-          ),
+              .join(', ')}`
+          )
         );
       } else {
         next(err);
@@ -57,7 +49,11 @@ const deleteArticle = (req, res, next) => {
     })
     .then((article) => {
       if (!article.owner.equals(req.user._id)) {
-        return next(new ForbiddenError('You must be the article owner in order to delete it'));
+        return next(
+          new ForbiddenError(
+            'You must be the article owner in order to delete it'
+          )
+        );
       }
       return ArticleSchema.deleteOne(article).then(() => res.send(article));
     })

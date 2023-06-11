@@ -7,9 +7,7 @@ const { router } = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewars/logger');
 const { requestsLmiter } = require('./middlewars/secureLimit');
 
-const {
-  PORT, MONGO_URL, NODE_ENV,
-} = require('./utils/config');
+const { PORT, MONGO_URL, NODE_ENV } = require('./utils/config');
 
 const isProduction = NODE_ENV !== 'production';
 const port = isProduction ? PORT : 3001;
@@ -21,7 +19,7 @@ app.use(requestLogger);
 app.use(cors());
 app.options('*', cors());
 app.use(helmet());
-app.use(requestsLmiter);
+// app.use(requestsLmiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(router);
