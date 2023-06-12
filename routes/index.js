@@ -14,8 +14,8 @@ router.post('/signin', validateUserBody, login);
 
 router.use(auth);
 
-router.use('/users', UserRouter);
-router.use('/articles', ArticleRouter);
+router.use('/', UserRouter);
+router.use('/', ArticleRouter);
 router.use('*', nonRoute);
 
 module.exports = { router };

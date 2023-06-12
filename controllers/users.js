@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const UserSchema = require('../models/users');
 const NotFoundError = require('../errors/NotFoundError');
+const UnauthorizedError = require('../errors/UnauthorizedError');
 const BadRequestError = require('../errors/BadRequestError');
 const ConflictError = require('../errors/ConflictError');
 
@@ -45,7 +46,7 @@ const login = (req, res, next) => {
       });
       res.send({ user, token });
     })
-    .catch(next);
+    .catch((err) => next(UnauthorizedError(err)));
 };
 
 const getUserInfo = (req, res, next) => {

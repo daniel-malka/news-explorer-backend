@@ -4,13 +4,13 @@ const {
   validateObjectId,
 } = require('../middlewars/validation');
 const {
-  postArticle,
   deleteArticle,
-  getUserArticles,
+  getSavedArticles,
+  saveArticle,
 } = require('../controllers/articles');
 
-router.get('/', getUserArticles);
-router.post('/', validateArticleBody, postArticle);
+router.get('/articles', getSavedArticles);
+router.post('/articles', /*validateArticleBody, */ saveArticle);
 router.delete('/:articleId', validateObjectId, deleteArticle);
 
 module.exports = { ArticleRouter: router };
