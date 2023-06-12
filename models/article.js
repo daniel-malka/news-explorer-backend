@@ -3,12 +3,11 @@ const urlRegex = require('../utils/regex');
 
 const ArticleSchema = new Schema(
   {
-    title: { type: String, required: [true, 'article title is required'] },
-    keyword: { type: String, required: [true, 'keyword is required'] },
-    text: { type: String, required: [true, 'text is required'] },
-    date: { type: String, required: [true, 'date is required'] },
-    source: { type: String, required: [true, 'source page name is required'] },
-    owner: { type: Schema.Types.ObjectId, ref: 'user', required: true },
+    title: { type: String, required: true },
+    keyword: { type: String, required: true },
+    text: { type: String, required: true },
+    date: { type: String, required: true },
+    source: { type: String, required: true },
     image: {
       type: String,
       required: true,
@@ -25,10 +24,11 @@ const ArticleSchema = new Schema(
         message: 'invalid url',
       },
     },
+    owner: { type: Schema.Types.ObjectId, ref: 'user', required: true },
   },
   {
     versionKey: false,
-  },
+  }
 );
 
 module.exports = model('article', ArticleSchema);
