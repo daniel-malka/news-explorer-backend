@@ -40,13 +40,13 @@ const saveArticle = (req, res, next) => {
     });
 };
 
-const deleteArticle = (req, res, next) => {
+const unsaveArticle = (req, res, next) => {
   const { articleId } = req.params;
 
   return ArticleSchema.findById(articleId)
     .orFail(next(new NotFoundError('There is no such card')))
     .then((article) => {
-      if (!article.owner.equals(req.user._id)) {
+      if (!article.owner.equals(req._id)) {
         return next(
           new ForbiddenError(
             'You must be the article owner in order to delete it'
@@ -60,4 +60,4 @@ const deleteArticle = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-module.exports = { getSavedArticles, saveArticle, deleteArticle };
+module.exports = { getSavedArticles, saveArticle, unsaveArticle };
