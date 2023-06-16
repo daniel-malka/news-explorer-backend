@@ -7,7 +7,7 @@ const getSavedArticles = (req, res, next) => {
   const { _id } = req.user;
 
   ArticleSchema.find({ owner: _id })
-    .then((articles) => res.send({ articles }))
+    .then((articles) => res.send(articles))
     .catch((err) => next(err));
 };
 
@@ -42,18 +42,20 @@ const saveArticle = (req, res, next) => {
 };
 
 const unsaveArticle = (req, res, next) => {
-  ArticleSchema.findById(req.params.articleId)
+  const { articleId } = req.params;
+  const { _id } = req.user;
+  ArticleSchema.findById({ _id: articleId })
     .orFail(next(new NotFoundError('There is no such card')))
     .then((article) => {
-      if (!article.owner.toString() === req.user._id) {
+      if (!article.owner.equals(_id)) {
         return next(
           new ForbiddenError(
             'You must be the article owner in order to delete it'
           )
         );
       }
-      ArticleSchema.findByIdAndDelete(req.params.articleId).then(
-        (deletedArticle) => res.send(deletedArticle)
+      ArticleSchema.findByIdAndDelete(articleId).then((deletedArticle) =>
+        res.send(deletedArticle)
       );
     })
     .catch((err) => next(err));
