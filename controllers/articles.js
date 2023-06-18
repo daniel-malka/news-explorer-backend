@@ -43,17 +43,20 @@ const saveArticle = (req, res, next) => {
 
 const unsaveArticle = (req, res, next) => {
   const { articleId } = req.params;
-  ArticleSchema.findId(articleId)
-    .orFail(next(new NotFoundError('There is no such cardaaa')))
+
+  ArticleSchema.findById(articleId)
+    .orFail(() => next(new NotFoundError('There is no such article')))
     .then((article) => {
       if (!article.owner.equals(req.user._id)) {
-        return next(
-          new ForbiddenError(
-            'You must be the article owner in order to delete it'
-          )
+        throw new ForbiddenError(
+          'You must be the article owner in order to delete it'
         );
       }
-      ArticleSchema.findByIdAndRemove(articleId).res.send(article);
+
+      return ArticleSchema.findByIdAndRemove(articleId);
+    })
+    .then((deletedArticle) => {
+      res.send(deletedArticle);
     })
     .catch((err) => next(err));
 };
