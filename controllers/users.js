@@ -38,10 +38,10 @@ const createUser = (req, res, next) => {
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
-
+  const { _id } = req.user;
   return UserSchema.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+      const token = jwt.sign({ _id: _id }, JWT_SECRET, {
         expiresIn: '7d',
       });
       res.send({ user, token });
@@ -50,10 +50,9 @@ const login = (req, res, next) => {
 };
 
 const getUserInfo = (req, res, next) => {
-  UserSchema.findById(req.user._id)
-    .orFail(() => {
-      next(new NotFoundError('No user found with this Id'));
-    })
+  const { _id } = req.user;
+  UserSchema.findById(_id)
+    .orFail(next(new NotFoundError('No user found with this Id')))
     .then((user) => {
       res.send(user);
     })
