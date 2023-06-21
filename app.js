@@ -14,12 +14,15 @@ const port = isProduction ? PORT : 3001;
 
 const app = express();
 mongoose.connect(MONGO_URL);
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200,
+};
 
+app.use(cors(corsOptions));
 app.use(requestLogger);
-app.use(cors());
-app.options('*', cors());
 app.use(helmet());
-// app.use(requestsLmiter);
+app.use(requestsLmiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(router);
