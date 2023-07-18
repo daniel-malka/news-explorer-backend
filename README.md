@@ -51,19 +51,8 @@ Navigate to the project directory: cd news-explorer-backend
 Install the dependencies using npm: npm install
 Start the server by running the command: npm run start. This will start the server on http://localhost:3001.
 Alternatively, you can run the server in development mode with auto-reloading using nodemon by using the command: npm run dev.
-File Structure
-The project's file structure is organized as follows:
 
-graphql
-Copy code
-news-explorer-backend/
-├── controllers/     # Contains the route controllers
-├── middlewares/     # Contains the custom middleware functions
-├── models/          # Contains the database models
-├── routes/          # Contains the API route definitions
-├── utils/           # Contains utility functions and modules
-├── app.js           # Main application file
-└── ...
+
 API Endpoints
 The following are the API endpoints available in this server:
 
@@ -89,12 +78,13 @@ cors: A middleware for enabling Cross-Origin Resource Sharing (CORS) in the serv
 helmet: A middleware for setting security-related headers.
 Nginx: A reverse Proxy service running on VM.
 PM2: A process manager that will keep the server up and running permanently.
+VM server: googleCloud.
+
 Server Availability
-The News Explorer Backend server is permanently running and accessible at the following URL:
+The News Explorer Backend server is permanently running and accessible at the following URL: https://api.news-expo.mooo.com/
 
-Production Server: api.news-expo.mooo.com
-
-You can make API requests to the above URL to interact with the server and access its functionalities. Please refer to the API endpoints mentioned earlier for the available routes and their corresponding HTTP methods.
+You can make API requests to the above URL to interact with the server and access its functionalities. 
+Please refer to the API endpoints mentioned earlier for the available routes and their corresponding HTTP methods.
 
 Feel free to explore the server and leverage its capabilities for building your own News Explorer application.
 
